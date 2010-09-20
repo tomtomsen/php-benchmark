@@ -2,6 +2,8 @@ php-benchmark
 ===============
 **php-benchmark** is a php framework to messure the performance of functions or class-methods.
 
+Version: _1.0beta1_
+
 Using the php-benchmark API
 ---------------------------
 
