@@ -182,13 +182,13 @@ class BenchmarkFunction implements ITarget
             throw new TargetNotFoundException($msg);
         }
 
-        if ( isset($this->pre_executed_target) ) {
+        if (isset($this->pre_executed_target)) {
             $this->pre_executed_target->invoke();
         }
 
         $result = $this->_reflection->invokeArgs($this->getArguments());
 
-        if ( isset($this->post_executed_target) ) {
+        if (isset($this->post_executed_target)) {
             $this->post_executed_target->invoke();
         }
 
@@ -200,10 +200,11 @@ class BenchmarkFunction implements ITarget
      *
      * @param ITarget $target Target
      *
-     * @returns BenchmarkMethod
+     * @return BenchmarkMethod
      */
-    public function setPreExecutedTarget(ITarget $target) {
-        if ( $target === $this ) {
+    public function setPreExecutedTarget(ITarget $target)
+    {
+        if ($target === $this) {
             throw new PossibleRecursionException('Recursion detected');
         }
         $this->pre_executed_target = $target;
@@ -216,10 +217,11 @@ class BenchmarkFunction implements ITarget
      *
      * @param ITarget $target Target
      *
-     * @returns BenchmarkMethod
+     * @return BenchmarkMethod
      */
-    public function setPostExecutedTarget(ITarget $target) {
-        if ( $target === $this ) {
+    public function setPostExecutedTarget(ITarget $target)
+    {
+        if ($target === $this) {
             throw new PossibleRecursionException('Recursion detected');
         }
         $this->post_executed_target = $target;

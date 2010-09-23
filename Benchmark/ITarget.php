@@ -85,12 +85,16 @@ interface ITarget extends IUniquify
     /**
      * Sets the pre-executed target
      *
+     * @param ITarget $target targets which gets pre executed
+     *
      * @return ITarget
      */
     public function setPreExecutedTarget(ITarget $target);
 
     /**
      * Sets the post-executed target
+     *
+     * @param ITarget $target targets which gets post executed
      *
      * @return ITarget
      */

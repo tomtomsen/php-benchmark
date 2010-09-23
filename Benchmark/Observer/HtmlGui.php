@@ -70,21 +70,41 @@ class HtmlGui extends AbstractGui
         parent::__construct();
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getBenchmarkStartedTemplate()
     {
         return 'html.pre_page';
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getTargetExecutionStartedTemplate()
     {
         return 'html.dialog';
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getTargetExecutionEndedTemplate()
     {
         return null;
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getBenchmarkEndedTemplate()
     {
         return 'html.post_page';

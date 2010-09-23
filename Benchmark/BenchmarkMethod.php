@@ -58,7 +58,8 @@
  * @link      http://github.com/tomtomsen/benchmark
  * @since     Class available since Release 1.0.0
  */
-class BenchmarkMethod implements ITarget {
+class BenchmarkMethod implements ITarget
+{
 
     /**
      * class name
@@ -131,8 +132,10 @@ class BenchmarkMethod implements ITarget {
      * @param string $description           description
      */
     public function __construct(
-    $class_name = '', $constructor_arguments = array(), $method_name = '', $method_arguments = array(), $description = ''
+        $class_name = '', $constructor_arguments = array(),
+        $method_name = '', $method_arguments = array(), $description = ''
     ) {
+        
         $this->class_name = null;
         $this->method_name = null;
         $this->constructor_arguments = array();
@@ -155,7 +158,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $args = $this->getArguments();
         $arg_output = (!empty($args) ? '..' : '');
         $class_name = $this->getClassName();
@@ -169,7 +173,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return mixed result of the method
      */
-    public function invoke() {
+    public function invoke()
+    {
         if (!isset($this->_reflection) || !isset($this->class_obj)) {
             $class_name = $this->getClassName();
             if (!isset($class_name)) {
@@ -184,16 +189,16 @@ class BenchmarkMethod implements ITarget {
             throw new TargetNotFoundException($exception_msg);
         }
 
-        if ( isset($this->pre_executed_target) ) {
+        if (isset($this->pre_executed_target)) {
             $this->pre_executed_target->invoke();
         }
 
-        $result =  $this->_reflection->invokeArgs(
-                $this->class_obj,
-                $this->getArguments()
+        $result = $this->_reflection->invokeArgs(
+            $this->class_obj,
+            $this->getArguments()
         );
 
-        if ( isset($this->post_executed_target) ) {
+        if (isset($this->post_executed_target)) {
             $this->post_executed_target->invoke();
         }
 
@@ -205,10 +210,11 @@ class BenchmarkMethod implements ITarget {
      *
      * @param ITarget $target Target
      *
-     * @returns BenchmarkMethod
+     * @return BenchmarkMethod
      */
-    public function setPreExecutedTarget(ITarget $target) {
-        if ( $target === $this ) {
+    public function setPreExecutedTarget(ITarget $target)
+    {
+        if ($target === $this) {
             throw new PossibleRecursionException('Recursion detected');
         }
         $this->pre_executed_target = $target;
@@ -221,10 +227,11 @@ class BenchmarkMethod implements ITarget {
      *
      * @param ITarget $target Target
      *
-     * @returns BenchmarkMethod
+     * @return BenchmarkMethod
      */
-    public function setPostExecutedTarget(ITarget $target) {
-        if ( $target === $this ) {
+    public function setPostExecutedTarget(ITarget $target)
+    {
+        if ($target === $this) {
             throw new PossibleRecursionException('Recursion detected');
         }
         $this->post_executed_target = $target;
@@ -239,7 +246,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return BenchmarkMethod
      */
-    public function setClass($class) {
+    public function setClass($class)
+    {
         if (isset($class) && is_object($class)) {
             $this->class_obj = $class;
             $this->class_name = get_class($class);
@@ -256,7 +264,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return object
      */
-    public function getClass() {
+    public function getClass()
+    {
         return $this->class_obj;
     }
 
@@ -268,12 +277,13 @@ class BenchmarkMethod implements ITarget {
      * 
      * @return BenchmarkMethod
      */
-    public function setClassName($class_name, array $constructor_args = null) {
+    public function setClassName($class_name, array $constructor_args = null)
+    {
         if (is_string($class_name) && strlen($class_name) > 0) {
             if (!class_exists($class_name)) {
                 $msg = sprintf(
-                                'could not find class with classname %s',
-                                $class_name
+                    'could not find class with classname %s',
+                    $class_name
                 );
                 throw new TargetNotFoundException($msg);
             }
@@ -296,7 +306,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return string
      */
-    public function getClassName() {
+    public function getClassName()
+    {
         return $this->class_name;
     }
 
@@ -307,7 +318,8 @@ class BenchmarkMethod implements ITarget {
      * 
      * @return BenchmarkMethod
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         if (is_string($name) && strlen($name) > 0) {
             $this->method_name = $name;
 
@@ -323,7 +335,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->method_name;
     }
 
@@ -334,7 +347,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return BenchmarkMethod
      */
-    protected function setConstructorArguments(array $args) {
+    protected function setConstructorArguments(array $args)
+    {
         if (is_array($args)) {
             $this->constructor_arguments = $args;
             $this->_refreshClassObject();
@@ -350,7 +364,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return array
      */
-    public function getConstructorArguments() {
+    public function getConstructorArguments()
+    {
         return $this->constructor_arguments;
     }
 
@@ -361,7 +376,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return BenchmarkMethod
      */
-    public function setArguments(array $args) {
+    public function setArguments(array $args)
+    {
         if (is_array($args)) {
             $this->method_arguments = $args;
             $this->_refreshReflection();
@@ -376,7 +392,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return array
      */
-    public function getArguments() {
+    public function getArguments()
+    {
         return $this->method_arguments;
     }
 
@@ -387,7 +404,8 @@ class BenchmarkMethod implements ITarget {
      * 
      * @return BenchmarkMethod
      */
-    public function setDescription($description) {
+    public function setDescription($description)
+    {
         if (is_string($description) && strlen($description) > 0) {
             $this->description = $description;
         }
@@ -400,7 +418,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
@@ -409,12 +428,13 @@ class BenchmarkMethod implements ITarget {
      *
      * @return string
      */
-    public function getCode() {
+    public function getCode()
+    {
         if (isset($this->_reflection)) {
             $file = new File($this->_reflection->getFileName());
             return $file->getPart(
-                    $this->_reflection->getStartLine(),
-                    $this->_reflection->getEndLine()
+                $this->_reflection->getStartLine(),
+                $this->_reflection->getEndLine()
             );
         }
 
@@ -426,7 +446,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return BenchmarkMethod
      */
-    private function _refreshClassObject() {
+    private function _refreshClassObject()
+    {
         $class_name = $this->getClassName();
         $constructor_args = $this->getConstructorArguments();
 
@@ -436,7 +457,7 @@ class BenchmarkMethod implements ITarget {
                 $this->class_obj = $reflection->newInstanceArgs($constructor_args);
             } catch (ReflectionException $ex) {
                 throw new TargetNotFoundException(
-                        $this->__toString() . ' not found', 0, $ex
+                    $this->__toString() . ' not found', 0, $ex
                 );
             }
         }
@@ -449,7 +470,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return boolean
      */
-    private function _refreshReflection() {
+    private function _refreshReflection()
+    {
         $class_name = $this->getClassName();
         $method_name = $this->getName();
 
@@ -459,7 +481,7 @@ class BenchmarkMethod implements ITarget {
                 return true;
             } catch (ReflectionException $ex) {
                 throw new TargetNotFoundException(
-                        'target ' . $this->__toString() . ' couldnt be found', 0, $ex
+                    'target ' . $this->__toString() . ' couldnt be found', 0, $ex
                 );
             }
         }
@@ -472,7 +494,8 @@ class BenchmarkMethod implements ITarget {
      *
      * @return string
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         return $this->_unique_id;
     }
 
@@ -481,16 +504,17 @@ class BenchmarkMethod implements ITarget {
      *
      * @return boolean
      */
-    private function _refreshUniqueId() {
+    private function _refreshUniqueId()
+    {
         $name = $this->getName();
         $class_name = $this->getClassName();
 
         if (isset($name) && isset($class_name)) {
             $unique_id = sprintf(
-                            '%s%s%s%s', $class_name,
-                            serialize($this->getConstructorArguments()),
-                            $name,
-                            serialize($this->getArguments())
+                '%s%s%s%s', $class_name,
+                serialize($this->getConstructorArguments()),
+                $name,
+                serialize($this->getArguments())
             );
 
             $this->_unique_id = $unique_id;

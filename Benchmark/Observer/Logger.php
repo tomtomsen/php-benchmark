@@ -49,7 +49,7 @@
  */
 
 /**
- * Description of ogger
+ * Description of Logger
  *
  * @category  Tool
  * @package   php-benchmark
@@ -60,7 +60,7 @@
  * @link      http://github.com/tomtomsen/benchmark
  * @since     Class available since Release 1.0.0
  */
-class ogger implements IObserver
+class Logger implements IObserver
 {
 
     /**
@@ -190,7 +190,7 @@ class ogger implements IObserver
      *
      * @param string $directory directory name
      * 
-     * @return ogger
+     * @return Logger
      */
     public function setDirectory($directory)
     {

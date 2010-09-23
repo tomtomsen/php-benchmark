@@ -71,21 +71,41 @@ class ConsoleGui extends AbstractGui
         parent::__construct();
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getBenchmarkStartedTemplate()
     {
         return 'console.pre_output';
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getTargetExecutionStartedTemplate()
     {
         return 'console.dialog';
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getTargetExecutionEndedTemplate()
     {
         return null;
     }
 
+    /**
+     * Returns template name
+     *
+     * @return string
+     */
     public function getBenchmarkEndedTemplate()
     {
         return 'console.post_output';

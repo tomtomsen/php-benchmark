@@ -45,7 +45,6 @@
  * @link      http://github.com/tomtomsen/benchmark
  * @since     File available since Release 1.0.0
  */
-
 require_once dirname(__FILE__) . '/Autoload.php';
 
 /**
@@ -60,7 +59,8 @@ require_once dirname(__FILE__) . '/Autoload.php';
  * @link      http://github.com/tomtomsen/benchmark
  * @since     Class available since Release 1.0.0
  */
-class Benchmark implements IObservable, IBenchmark {
+class Benchmark implements IObservable, IBenchmark
+{
 
     /**
      * Title of the benchmark
@@ -124,7 +124,8 @@ class Benchmark implements IObservable, IBenchmark {
      * @param string $title       title of the benchmark
      * @param string $description description of the benchmark
      */
-    public function __construct($title, $description = '') {
+    public function __construct($title, $description = '')
+    {
         $this->setTitle($title);
         $this->setDescription($description);
 
@@ -142,7 +143,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return boolean false if an error occured, otherwise true
      */
-    public function run() {
+    public function run()
+    {
         if (empty($this->observers)) {
             throw new NoObserverGivenException();
         }
@@ -183,7 +185,8 @@ class Benchmark implements IObservable, IBenchmark {
      * 
      * @return boolean
      */
-    public function addTarget(ITarget $target) {
+    public function addTarget(ITarget $target)
+    {
         if (!in_array($target->getUniqueId(), array_keys($this->targets))) {
             // @todo: is cloning a good idea?
             $this->targets[$target->getUniqueId()] = $target;
@@ -200,7 +203,8 @@ class Benchmark implements IObservable, IBenchmark {
      * 
      * @return Result
      */
-    protected function invokeCallback(ITarget $target) {
+    protected function invokeCallback(ITarget $target)
+    {
         $memory_start = memory_get_usage(true);
         $time_start = microtime(true);
 
@@ -227,7 +231,8 @@ class Benchmark implements IObservable, IBenchmark {
      * 
      * @return Benchmark
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         if (is_string($title) && strlen($title) > 0) {
             $this->title = $title;
         }
@@ -240,7 +245,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return string
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
     }
 
@@ -251,7 +257,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    public function setDescription($description) {
+    public function setDescription($description)
+    {
         if (is_string($description)) {
             $this->description = $description;
         }
@@ -264,7 +271,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
@@ -275,7 +283,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    protected function setCurrentTarget(ITarget $target) {
+    protected function setCurrentTarget(ITarget $target)
+    {
         $this->current_target = $target;
 
         return $this;
@@ -286,7 +295,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return arget
      */
-    public function getCurrentTarget() {
+    public function getCurrentTarget()
+    {
         return $this->current_target;
     }
 
@@ -297,7 +307,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    protected function setLatestResult(Result $result) {
+    protected function setLatestResult(Result $result)
+    {
         $this->latest_result = $result;
 
         return $this;
@@ -308,7 +319,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Result
      */
-    public function getLatestResult() {
+    public function getLatestResult()
+    {
         return $this->latest_result;
     }
 
@@ -319,7 +331,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    protected function setCurrentIteration($iteration) {
+    protected function setCurrentIteration($iteration)
+    {
         if (is_numeric($iteration)) {
             $this->current_iteration = intval($iteration);
         }
@@ -332,7 +345,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return integer
      */
-    public function getCurrentIteration() {
+    public function getCurrentIteration()
+    {
         return $this->current_iteration;
     }
 
@@ -341,7 +355,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return array contains arget objects
      */
-    public function getTargets() {
+    public function getTargets()
+    {
         return $this->targets;
     }
 
@@ -352,7 +367,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    public function setIterations($iteration) {
+    public function setIterations($iteration)
+    {
         if (is_numeric($iteration) && $iteration > 0) {
             $this->iterations = $iteration;
         }
@@ -365,7 +381,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return integer
      */
-    public function getIterations() {
+    public function getIterations()
+    {
         return $this->iterations;
     }
 
@@ -376,7 +393,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    public function attach(IObserver $observer) {
+    public function attach(IObserver $observer)
+    {
         if (!in_array($observer, $this->observers)) {
             $this->observers[] = $observer;
         }
@@ -391,7 +409,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    public function detach(IObserver $observer) {
+    public function detach(IObserver $observer)
+    {
         if (in_array($observer, $this->observers)) {
             $offset = array_search($observer, $this->observers);
             $this->observers = array_splice($this->observers, $offset + 1, 1);
@@ -407,7 +426,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    public function notify($state = null) {
+    public function notify($state = null)
+    {
         if (isset($state)) {
             $this->setState($state);
 
@@ -428,7 +448,8 @@ class Benchmark implements IObservable, IBenchmark {
      *
      * @return Benchmark
      */
-    protected function setState($state) {
+    protected function setState($state)
+    {
         $this->state = $state;
 
         return $this;
@@ -440,7 +461,8 @@ class Benchmark implements IObservable, IBenchmark {
      * @see State
      * @return integer
      */
-    public function getState() {
+    public function getState()
+    {
         return $this->state;
     }
 
@@ -455,7 +477,8 @@ if (!function_exists('memory_get_usage')) {
      *
      * @return integer Returns the memory amount in bytes. 
      */
-    function memory_get_usage() {
+    function memory_get_usage()
+    {
         // If its Windows
         // Tested on Win XP Pro SP2. Should work on Win 2003 Server too
         // Doesn't work for 2000

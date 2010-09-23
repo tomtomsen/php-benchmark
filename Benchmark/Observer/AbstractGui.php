@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Benchmark
+ * php-benchmark
  *
  * Copyright (c) 2002-2010, Tom Tomsen <tom.tomsen@inbox.com>.
  * All rights reserved.
@@ -94,18 +94,21 @@ abstract class AbstractGui implements IObserver
      * @return string
      */
     abstract function getBenchmarkStartedTemplate();
+
     /**
      * Template which gets used after benchmark has ended
      *
      * @return string
      */
     abstract function getBenchmarkEndedTemplate();
+
     /**
      * Template which gets used before a target gets executed
      *
      * @return string
      */
     abstract function getTargetExecutionStartedTemplate();
+
     /**
      * Template which gets used after a target gets executed
      *
@@ -172,7 +175,7 @@ abstract class AbstractGui implements IObserver
      *
      * @return void
      */
-    protected function BenchmarkStarted(Benchmark $benchmark)
+    protected function benchmarkStarted(Benchmark $benchmark)
     {
         $template = $this->getBenchmarkStartedTemplate();
 
@@ -202,18 +205,18 @@ abstract class AbstractGui implements IObserver
             $this->view->setTemplate($template);
             $this->assignGeneralInfos($benchmark);
             $this->view->assign(
-              'current_target', $benchmark->getCurrentTarget()
+                'current_target', $benchmark->getCurrentTarget()
             );
             $current_iteration = $benchmark->getCurrentIteration();
             $this->view->assign(
-              'current_iteration', $current_iteration
+                'current_iteration', $current_iteration
             );
             $this->view->assign(
-              'percentage', 
-              $this->getPercentage(
-                $current_iteration-1,
-                $benchmark->getIterations()
-              )
+                'percentage',
+                $this->getPercentage(
+                    $current_iteration - 1,
+                    $benchmark->getIterations()
+                )
             );
 
             $this->output($this->view->render());
@@ -240,14 +243,18 @@ abstract class AbstractGui implements IObserver
             $this->view->setTemplate($template);
             $this->assignGeneralInfos($benchmark);
             $this->view->assign(
-              'current_target', $benchmark->getCurrentTarget()
+                'current_target', $benchmark->getCurrentTarget()
             );
             $current_iteration = $benchmark->getCurrentIteration();
             $this->view->assign(
-              'current_iteration', $current_iteration
+                'current_iteration', $current_iteration
             );
             $this->view->assign(
-              'percentage', $benchmark->getPercentage($current_iteration, $benchmark->getIterations())
+                'percentage',
+                $benchmark->getPercentage(
+                    $current_iteration,
+                    $benchmark->getIterations()
+                )
             );
             $this->output($this->view->render());
         }
@@ -264,7 +271,7 @@ abstract class AbstractGui implements IObserver
      *
      * @return void
      */
-    protected function BenchmarkEnded(Benchmark $benchmark)
+    protected function benchmarkEnded(Benchmark $benchmark)
     {
         $template = $this->getBenchmarkEndedTemplate();
 
@@ -275,7 +282,7 @@ abstract class AbstractGui implements IObserver
             $sorted_targets = Helper::sortArrayByOtherArray(
                 $benchmark->getTargets(), $this->targets_times
             );
-            
+
             $this->view->assign('benchmark_targets', $sorted_targets);
             $this->view->assign('times', $this->targets_times);
             $this->view->assign('memory', $this->targets_memory_leaked);
@@ -357,7 +364,8 @@ abstract class AbstractGui implements IObserver
      *
      * @return Targets
      */
-    public function getPreviousTarget() {
+    public function getPreviousTarget()
+    {
         return $this->previous_target;
     }
 
@@ -366,7 +374,8 @@ abstract class AbstractGui implements IObserver
      *
      * @return boolean
      */
-    public function isFirstTarget() {
+    public function isFirstTarget()
+    {
         return ($this->previous_target == null);
     }
 
@@ -375,9 +384,12 @@ abstract class AbstractGui implements IObserver
      *
      * @param numeric $current value
      * @param numeric $total   total value
+     * 
      * @return numeric
      */
-    protected function getPercentage($current, $total) {
-        return 100/$total * $current;
+    protected function getPercentage($current, $total)
+    {
+        return 100 / $total * $current;
     }
+
 }
