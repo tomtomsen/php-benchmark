@@ -135,7 +135,8 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
         self::assertSame($args, $doSomething_arguments);
     }
 
-    public function testSetArguments_EnforceReflectionException() {
+    public function testSetArguments_EnforceReflectionException()
+    {
         $this->function = $this->getMock('BenchmarkFunction', array('getName'));
 
         $this->function->expects($this->exactly(2))
@@ -143,9 +144,9 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
                 ->will($this->returnValue('unknownFunction'));
 
         try {
-            $this->function->setArguments(array(1,2)); // enforce reflection to be refreshed
+            $this->function->setArguments(array(1, 2)); // enforce reflection to be refreshed
             self::fail('argetNotFoundException expected');
-        } catch ( TargetNotFoundException $ex ) {
+        } catch (TargetNotFoundException $ex) {
             self::assertType('ReflectionException', $ex->getPrevious());
         }
     }
@@ -213,7 +214,8 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
         self::assertSame('doSomething(..)', $this->function->__toString());
     }
 
-    public function testSetPreExecutedTarget() {
+    public function testSetPreExecutedTarget()
+    {
         TestHelper::includeDoSomethingFunction();
 
         global $doSomething2_called;
@@ -237,7 +239,8 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
         self::assertSame($args, $doSomething2_arguments);
     }
 
-    public function testSetPostExecutedTarget() {
+    public function testSetPostExecutedTarget()
+    {
         TestHelper::includeDoSomethingFunction();
 
         global $doSomething2_called;
@@ -264,7 +267,8 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException PossibleRecursionException
      */
-    public function testSetPreExecutedRecursiveTarget() {
+    public function testSetPreExecutedRecursiveTarget()
+    {
         TestHelper::includeDoSomethingFunction();
 
         $args = array('arg1', 'arg2');
@@ -280,7 +284,8 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException PossibleRecursionException
      */
-    public function testSetPostExecutedRecursiveTarget() {
+    public function testSetPostExecutedRecursiveTarget()
+    {
         TestHelper::includeDoSomethingFunction();
 
         $args = array('arg1', 'arg2');
@@ -292,4 +297,5 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
         $this->function->setArguments(array('arg3', 'arg4'));
         $this->function->invoke();
     }
+
 }
