@@ -52,7 +52,7 @@
  * Contains main functionality of Benchmark Gui's
  *
  * @category  Tool
- * @package   Benchmark
+ * @package   php-benchmark
  * @author    Tom Tomsen <tom.tomsen@inbox.com>
  * @copyright 2010 Tom Tomsen <tom.tomsen@inbox.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
