@@ -380,8 +380,9 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         self::assertContains('ComplexClass', $this->method->getUniqueId());
     }
 
-    public function testSetPreExecutedMethod() {
-        TestHelper::includeDoSomethingFunction();
+    public function testSetPreExecutedMethod()
+    {
+        TestHelper::includeComplexClass();
 
         global $doSomething2_called;
         global $doSomething2_arguments;
@@ -409,8 +410,9 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         $this->method->invoke();
     }
 
-    public function testSetPostExecutedTarget() {
-        TestHelper::includeDoSomethingFunction();
+    public function testSetPostExecutedTarget()
+    {
+        TestHelper::includeComplexClass();
 
         global $doSomething2_called;
         global $doSomething2_arguments;
@@ -441,8 +443,9 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException PossibleRecursionException
      */
-    public function testSetPreExecutedRecursiveTarget() {
-        TestHelper::includeDoSomethingFunction();
+    public function testSetPreExecutedRecursiveTarget()
+    {
+        TestHelper::includeComplexClass();
 
         $complexClass = new ComplexClass(1, 2);
 
@@ -462,8 +465,9 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException PossibleRecursionException
      */
-    public function testSetPostExecutedRecursiveTarget() {
-        TestHelper::includeDoSomethingFunction();
+    public function testSetPostExecutedRecursiveTarget()
+    {
+        TestHelper::includeComplexClass();
 
         $complexClass = new ComplexClass(1, 2);
 
