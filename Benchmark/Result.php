@@ -98,7 +98,7 @@ class Result
     /**
      * Sets the result of the method
      *
-     * @param mixed $result Method or function result
+     * @param mixed $result BenchmarkMethod or function result
      *
      * @return Result
      */
