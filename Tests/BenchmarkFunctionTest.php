@@ -92,7 +92,7 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
         $name = 'unknownFunction';
         try {
             $this->function->setName($name);
-            $self::fail('TargetNotFoundException expected');
+            self::fail('TargetNotFoundException expected');
         } catch (TargetNotFoundException $ex) {
 
         }
