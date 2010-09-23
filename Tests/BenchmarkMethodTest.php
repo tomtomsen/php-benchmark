@@ -69,7 +69,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     {
         TestHelper::includeComplexClass();
 
-        $complexClass = new ComplexClass(1,2);
+        $complexClass = new ComplexClass(1, 2);
         $this->method->setClass($complexClass);
 
         try {
@@ -95,7 +95,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         TestHelper::includeComplexClass();
 
         $method = $this->getMock('BenchmarkMethod', array('getName', 'getClassName', '__toString'));
-        
+
         $method->expects($this->once())
                 ->method('getName')
                 ->will($this->returnValue('methodName'));
@@ -131,7 +131,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         self::assertNull($this->method->getClass());
         self::assertNull($this->method->getClassName());
     }
-    
+
     public function testGetClass_DefaultValue()
     {
         self::assertNull($this->method->getClass());
@@ -159,7 +159,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     public function testSetClassName_InvalidArguments()
     {
         TestHelper::includeComplexClass();
-        
+
         $class_name = 'ComplexClass';
         $this->method->setClassName($class_name, array(1, 2)); // fill with valid value
 
@@ -362,17 +362,19 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
 ', $this->method->getCode());
     }
 
-    public function testGetUniqueId() {
+    public function testGetUniqueId()
+    {
         self::assertContains('target', $this->method->getUniqueId());
     }
 
-    public function testGetUniqueId_AllAttributesSet() {
+    public function testGetUniqueId_AllAttributesSet()
+    {
         TestHelper::includeComplexClass();
 
         $class = new ComplexClass(1, 2);
         $this->method->setClass($class);
         $this->method->setName('doSomething');
-        $this->method->setArguments(array(1,2));
+        $this->method->setArguments(array(1, 2));
 
         self::assertContains('doSomething', $this->method->getUniqueId());
         self::assertContains('ComplexClass', $this->method->getUniqueId());
@@ -389,17 +391,17 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         self::assertTrue(empty($doSomething2_arguments),
                         'doSomething must not have gotten any arguments');
 
-        $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1,2));
+        $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1, 2));
 
         $complexclass->expects($this->once())
                 ->method('doSomething')
-                ->with($this->equalTo(3,4));
+                ->with($this->equalTo(3, 4));
 
         $target = new BenchmarkMethod();
         $target->setClass($complexclass);
         $target->setName('doSomething');
         $target->setArguments(array(3, 4));
-        
+
         $this->method->setPreExecutedTarget($target);
         $this->method->setClassName('ComplexClass', array('arg3', 'arg4'));
         $this->method->setName('doSomething');
@@ -418,11 +420,11 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         self::assertTrue(empty($doSomething2_arguments),
                         'doSomething must not have gotten any arguments');
 
-        $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1,2));
+        $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1, 2));
 
         $complexclass->expects($this->once())
                 ->method('doSomething')
-                ->with($this->equalTo(3,4));
+                ->with($this->equalTo(3, 4));
 
         $target = new BenchmarkMethod();
         $target->setClass($complexclass);
@@ -442,7 +444,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     public function testSetPreExecutedRecursiveTarget() {
         TestHelper::includeDoSomethingFunction();
 
-        $complexClass=new ComplexClass(1,2);
+        $complexClass = new ComplexClass(1, 2);
 
         $target = new BenchmarkMethod();
         $target->setClass($complexClass);
@@ -463,7 +465,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     public function testSetPostExecutedRecursiveTarget() {
         TestHelper::includeDoSomethingFunction();
 
-        $complexClass=new ComplexClass(1,2);
+        $complexClass = new ComplexClass(1, 2);
 
         $target = new BenchmarkMethod();
         $target->setClass($complexClass);
@@ -477,4 +479,5 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         $this->method->setArguments(array('arg3', 'arg4'));
         $this->method->invoke();
     }
+
 }
