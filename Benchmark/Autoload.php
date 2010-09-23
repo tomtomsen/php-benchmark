@@ -6,6 +6,7 @@ function benchmark_autoload($class) {
         './',
         './Observer/',
         './Exception/',
+        './Utils/',
     );
 
     for ($i = count($class_directories); $i--;) {
