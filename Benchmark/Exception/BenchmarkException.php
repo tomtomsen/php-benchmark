@@ -1,4 +1,5 @@
 <?php
+
 /**
  * php-benchmark
  *
@@ -59,5 +60,35 @@
  */
 abstract class BenchmarkException extends Exception
 {
+    /**
+     * @var Exception previous Exception
+     */
+    protected $previous;
+
+    /**
+     * Constructor
+     *
+     * @param string    $message  The Exception message to throw
+     * @param integer   $code     The Exception code
+     * @param Exception $previous The previous exception used for the exception
+     * chaining
+     */
+    public function __construct($message = '', $code = 0, Exception $previous = null)
+    {
+        parent::__construct($message, $code);
+
+        $this->previous = $previous;
+    }
+
+    /**
+     * Returns previous Exception
+     *
+     * @return Exception Returns the previous Exception if available or NULL
+     * otherwise.
+     */
+    public function getPrevious()
+    {
+        return $this->previous;
+    }
 
 }
