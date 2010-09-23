@@ -384,14 +384,6 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     {
         TestHelper::includeComplexClass();
 
-        global $doSomething2_called;
-        global $doSomething2_arguments;
-
-        self::assertFalse($doSomething2_called,
-                        'doSomething must be uncalled');
-        self::assertTrue(empty($doSomething2_arguments),
-                        'doSomething must not have gotten any arguments');
-
         $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1, 2));
 
         $complexclass->expects($this->once())
@@ -413,14 +405,6 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     public function testSetPostExecutedTarget()
     {
         TestHelper::includeComplexClass();
-
-        global $doSomething2_called;
-        global $doSomething2_arguments;
-
-        self::assertFalse($doSomething2_called,
-                        'doSomething must be uncalled');
-        self::assertTrue(empty($doSomething2_arguments),
-                        'doSomething must not have gotten any arguments');
 
         $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1, 2));
 
