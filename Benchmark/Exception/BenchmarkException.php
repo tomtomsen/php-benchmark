@@ -86,7 +86,7 @@ abstract class BenchmarkException extends Exception
      * @return Exception Returns the previous Exception if available or NULL
      * otherwise.
      */
-    public function getPrevious()
+    public function getPreviousException()
     {
         return $this->previous;
     }

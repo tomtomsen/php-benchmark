@@ -147,7 +147,7 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
             $this->function->setArguments(array(1, 2)); // enforce reflection to be refreshed
             self::fail('argetNotFoundException expected');
         } catch (TargetNotFoundException $ex) {
-            self::assertType('ReflectionException', $ex->getPrevious());
+            self::assertType('ReflectionException', $ex->getPreviousException());
         }
     }
 
