@@ -111,8 +111,8 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
         TestHelper::includeComplexClass();
         TestHelper::includeDoSomethingFunction();
 
-        $benchmark_function = new Functionn('doSomething', array(1, 2), 'description');
-        $benchmark_method = new Method('ComplexClass', array(1, 2), 'doSomething', array(1, 2), 'description');
+        $benchmark_function = new BenchmarkFunction('doSomething', array(1, 2), 'description');
+        $benchmark_method = new BenchmarkMethod('ComplexClass', array(1, 2), 'doSomething', array(1, 2), 'description');
 
         $this->benchmark->addTarget($benchmark_function);
         $this->benchmark->addTarget($benchmark_method);
@@ -126,8 +126,8 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
     public function testAddTarget_SameTargetMultipleTimes() {
         TestHelper::includeDoSomethingFunction();
 
-        $target1 = new Functionn('doSomething', array(1, 2), 'description');
-        $target2 = new Functionn('doSomething', array(1, 2), 'an other description');
+        $target1 = new BenchmarkFunction('doSomething', array(1, 2), 'description');
+        $target2 = new BenchmarkFunction('doSomething', array(1, 2), 'an other description');
 
         self::assertTrue($this->benchmark->addTarget($target1));
         self::assertFalse($this->benchmark->addTarget($target2));
@@ -152,8 +152,8 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
         require_once dirname(__FILE__) . '/helper/ComplexClass.php';
         require dirname(__FILE__) . '/helper/function_doSomething.php';
 
-        $this->benchmark->addTarget(new Method('ComplexClass', array(1, 2), 'doSomething'));
-        $this->benchmark->addTarget(new Functionn('doSomething'));
+        $this->benchmark->addTarget(new BenchmarkMethod('ComplexClass', array(1, 2), 'doSomething'));
+        $this->benchmark->addTarget(new BenchmarkFunction('doSomething'));
 
         $targets = $this->benchmark->getTargets();
         self::assertSame(2, count($targets));
@@ -274,7 +274,7 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
     public function testRun_NoObserverGiven() {
         TestHelper::includeDoSomethingFunction();
 
-        $benchmark_function = new Functionn('doSomething', array(1, 2), 'description');
+        $benchmark_function = new BenchmarkFunction('doSomething', array(1, 2), 'description');
         $this->benchmark->addTarget($benchmark_function);
 
         $this->benchmark->run();
@@ -288,7 +288,7 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
 
         $observer_gui = new Gui();
 
-        $benchmark_function = new Functionn('doSomething', array(1, 2), 'description');
+        $benchmark_function = new BenchmarkFunction('doSomething', array(1, 2), 'description');
         $this->benchmark->attach($observer_gui);
 
         $this->benchmark->run();
