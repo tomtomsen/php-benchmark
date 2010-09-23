@@ -24,5 +24,8 @@
 
  ----------------------------------------------------------------------
   php benchmark framework written by tom tomsen <tom.tomsen@inbox.com>
+
+                          version: <?php echo Version::id(); ?>
+              
  ----------------------------------------------------------------------
 
