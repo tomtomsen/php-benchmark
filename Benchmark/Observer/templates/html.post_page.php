@@ -1,4 +1,27 @@
 <?php
+if (!function_exists('convertSecondsToTimeFormat')) {
+
+    function convertSecondsToTimeFormat($seconds)
+    {
+        if (!is_numeric($seconds)) {
+            return false;
+        }
+
+        $seconds = doubleval($seconds);
+        if ($seconds < 1) {
+            $ms = $seconds * 1000;
+            if ($ms < 1) {
+                $ys = $ms * 1000;
+                return number_format($ys, 0, ',', '.') . ' &mu;s';
+            }
+
+            return number_format($ms, 1, ',', '.') . ' ms';
+        }
+
+        return number_format($seconds, 1, ',', '.') . ' s';
+    }
+}
+
 if ( $this->benchmark_targets != null && count($this->benchmark_targets) > 0 ) : ?>
                 </ul>
 
@@ -13,7 +36,7 @@ if ( $this->benchmark_targets != null && count($this->benchmark_targets) > 0 ) :
                             <p class="description"><span class="label">Description: </span><?php echo $this->benchmark_targets[$keys[$i]]->getDescription(); ?></p>
                             <p class="info">
                                 <span class="time">Time:</span>
-                                <?php echo Helper::convertSecondsToTimeFormat($this->times[$keys[$i]]/$this->benchmark_iterations); ?>
+                                <?php echo convertSecondsToTimeFormat($this->times[$keys[$i]]/$this->benchmark_iterations); ?>
                                 <span class="memory">Memory leaked:</span>
                                 <?php echo $this->memory[$keys[$i]]; ?> byte<?php if ($this->memory[$keys[$i]] > 1) : ?>s<?php endif; ?>
                                 <script type="text/javascript">
