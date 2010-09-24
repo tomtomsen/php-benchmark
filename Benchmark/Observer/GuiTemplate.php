@@ -159,7 +159,6 @@ class GuiTemplate implements ITemplateView
             return false;
         }
 
-        include_once dirname(__FILE__) . '/../Helper.php';
         ob_start();
         include $this->template;
         $data = ob_get_contents();
