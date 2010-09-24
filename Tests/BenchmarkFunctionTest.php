@@ -37,10 +37,19 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
 
     public function testGetCode()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        TestHelper::includeDoSomethingFunction();
+
+        $this->function->setName('doSomething');
+
+        $code = $this->function->getCode();
+        var_dump($code);
+        self::assertContains('function', $code);
+        self::assertContains('return', $code);
+    }
+
+    public function testGetCode_NoReflectionTillYet()
+    {
+        self::assertFalse($this->function->getCode());
     }
 
     public function testInvoke()
