@@ -465,8 +465,6 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         } catch (TargetNotFoundException $ex) {
             self::assertTrue($ex->getPreviousException() instanceof ReflectionException);
         }
-
-        var_dump($mock);
     }
 
 }

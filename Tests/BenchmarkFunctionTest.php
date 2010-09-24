@@ -42,7 +42,6 @@ class BenchmarkFunctionTest extends PHPUnit_Framework_TestCase
         $this->function->setName('doSomething');
 
         $code = $this->function->getCode();
-        var_dump($code);
         self::assertContains('function', $code);
         self::assertContains('return', $code);
     }
