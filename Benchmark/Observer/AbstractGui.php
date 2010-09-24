@@ -200,6 +200,7 @@ abstract class AbstractGui implements IObserver
     protected function targetExecutionStarted(Benchmark $benchmark)
     {
         $template = $this->getTargetExecutionStartedTemplate();
+        $this->addToTargetPool($benchmark->getCurrentTarget());
 
         if (is_string($template) && strlen($template) > 0) {
             $this->view->setTemplate($template);
@@ -280,7 +281,7 @@ abstract class AbstractGui implements IObserver
             $this->assignGeneralInfos($benchmark);
 
             $sorted_targets = ArrayUtils::sortArrayByArray(
-                $benchmark->getTargets(), $this->targets_times
+                $this->getTargetPool(), $this->targets_times
             );
 
             $this->view->assign('benchmark_targets', $sorted_targets);
@@ -292,6 +293,22 @@ abstract class AbstractGui implements IObserver
         }
 
         return;
+    }
+
+    protected function addToTargetPool(ITarget $target) {
+        $key = $this->hash($target);
+        if ( !isset($this->target_pool[$key]) ) {
+            $this->target_pool[$key] = $target;
+        }
+    }
+
+    protected function getTargetPool() {
+        return $this->target_pool;
+    }
+
+    protected function hash($obj)
+    {
+        return spl_object_hash($obj);
     }
 
     /**
@@ -306,7 +323,7 @@ abstract class AbstractGui implements IObserver
         $current_result = $benchmark->getLatestResult();
         $current_target = $benchmark->getCurrentTarget();
 
-        $key = $current_target->getUniqueId();
+        $key = $this->hash($current_target);
 
         if (!isset($this->targets_times[$key])) {
             $this->targets_times[$key] = $current_result->getTimeElapsed();

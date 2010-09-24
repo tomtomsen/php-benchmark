@@ -362,24 +362,6 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
 ', $this->method->getCode());
     }
 
-    public function testGetUniqueId()
-    {
-        self::assertContains('target', $this->method->getUniqueId());
-    }
-
-    public function testGetUniqueId_AllAttributesSet()
-    {
-        TestHelper::includeComplexClass();
-
-        $class = new ComplexClass(1, 2);
-        $this->method->setClass($class);
-        $this->method->setName('doSomething');
-        $this->method->setArguments(array(1, 2));
-
-        self::assertContains('doSomething', $this->method->getUniqueId());
-        self::assertContains('ComplexClass', $this->method->getUniqueId());
-    }
-
     public function testSetPreExecutedMethod()
     {
         TestHelper::includeComplexClass();

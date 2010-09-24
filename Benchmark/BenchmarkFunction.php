@@ -141,16 +141,6 @@ class BenchmarkFunction implements ITarget
     }
 
     /**
-     * Returns the unique Id
-     *
-     * @return string
-     */
-    public function getUniqueId()
-    {
-        return $this->_unique_id;
-    }
-
-    /**
      * Returns the code of the function
      *
      * @return string
@@ -247,7 +237,6 @@ class BenchmarkFunction implements ITarget
             $this->function_name = $name;
 
             $this->_refreshReflection();
-            $this->_refreshUniqueId();
         }
 
         return $this;
@@ -275,7 +264,6 @@ class BenchmarkFunction implements ITarget
         if (is_array($args)) {
             $this->function_arguments = $args;
             $this->_refreshReflection();
-            $this->_refreshUniqueId();
         }
 
         return $this;
@@ -341,23 +329,6 @@ class BenchmarkFunction implements ITarget
         }
 
         return false;
-    }
-
-    /**
-     * Updates the unique id
-     *
-     * @return boolean
-     */
-    private function _refreshUniqueId()
-    {
-        $name = $this->getName();
-        if (isset($name)) {
-            $this->_unique_id = $name . serialize($this->getArguments());
-        } else {
-            $this->_unique_id = uniqid('target');
-        }
-
-        return true;
     }
 
 }

@@ -58,7 +58,7 @@
  * @link      http://github.com/tomtomsen/benchmark
  * @since     Class available since Release 1.0.0
  */
-interface ITarget extends IUniquify
+interface ITarget
 {
 
     /**

@@ -119,22 +119,18 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
 
         $targets = $this->benchmark->getTargets();
         self::assertSame(2, count($targets));
-        self::assertContains($benchmark_function, $targets);
-        self::assertContains($benchmark_method, $targets);
     }
 
     public function testAddTarget_SameTargetMultipleTimes() {
         TestHelper::includeDoSomethingFunction();
 
         $target1 = new BenchmarkFunction('doSomething', array(1, 2), 'description');
-        $target2 = new BenchmarkFunction('doSomething', array(1, 2), 'an other description');
 
-        self::assertTrue($this->benchmark->addTarget($target1));
-        self::assertFalse($this->benchmark->addTarget($target2));
+        $this->benchmark->addTarget($target1);
+        $this->benchmark->addTarget($target1);
 
         $targets = $this->benchmark->getTargets();
-        self::assertSame(1, count($targets));
-        self::assertSame($target1, reset($targets));
+        self::assertSame(2, count($targets));
     }
 
     /**

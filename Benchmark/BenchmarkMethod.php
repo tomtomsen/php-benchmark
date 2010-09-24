@@ -115,12 +115,6 @@ class BenchmarkMethod implements ITarget
      * @var ReflectionMethod
      */
     private $_reflection;
-    /**
-     * unique id
-     *
-     * @var string
-     */
-    private $_unique_id;
 
     /**
      * Constructor
@@ -253,7 +247,6 @@ class BenchmarkMethod implements ITarget
             $this->class_name = get_class($class);
 
             $this->_refreshReflection();
-            $this->_refreshUniqueId();
         }
 
         return $this;
@@ -295,7 +288,6 @@ class BenchmarkMethod implements ITarget
 
             $this->_refreshClassObject();
             $this->_refreshReflection();
-            $this->_refreshUniqueId();
         }
 
         return $this;
@@ -324,7 +316,6 @@ class BenchmarkMethod implements ITarget
             $this->method_name = $name;
 
             $this->_refreshReflection();
-            $this->_refreshUniqueId();
         }
 
         return $this;
@@ -353,7 +344,6 @@ class BenchmarkMethod implements ITarget
             $this->constructor_arguments = $args;
             $this->_refreshClassObject();
             $this->_refreshReflection();
-            $this->_refreshUniqueId();
         }
 
         return $this;
@@ -381,7 +371,6 @@ class BenchmarkMethod implements ITarget
         if (is_array($args)) {
             $this->method_arguments = $args;
             $this->_refreshReflection();
-            $this->_refreshUniqueId();
         }
 
         return $this;
@@ -488,41 +477,4 @@ class BenchmarkMethod implements ITarget
 
         return false;
     }
-
-    /**
-     * Returns a unique Id
-     *
-     * @return string
-     */
-    public function getUniqueId()
-    {
-        return $this->_unique_id;
-    }
-
-    /**
-     * Updates the unique id
-     *
-     * @return boolean
-     */
-    private function _refreshUniqueId()
-    {
-        $name = $this->getName();
-        $class_name = $this->getClassName();
-
-        if (isset($name) && isset($class_name)) {
-            $unique_id = sprintf(
-                '%s%s%s%s', $class_name,
-                serialize($this->getConstructorArguments()),
-                $name,
-                serialize($this->getArguments())
-            );
-
-            $this->_unique_id = $unique_id;
-        } else {
-            $this->_unique_id = uniqid('target');
-        }
-
-        return true;
-    }
-
 }
