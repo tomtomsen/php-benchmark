@@ -52,7 +52,7 @@ Autoload::getInstance(dirname(__FILE__))->registerFolders(
         'Observer/',
         'Exception/',
     )
-    );
+);
 
 /**
  * A Benchmark can be run and starts specified methods/functions
