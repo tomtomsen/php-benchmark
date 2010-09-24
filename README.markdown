@@ -31,7 +31,7 @@ Upcoming features
 
 Requirements
 ------------
-*php-benchmark* is testes with
+*php-benchmark* is tested with
 
  - php 5.3.3
  - php 5.2.14
