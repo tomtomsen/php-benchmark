@@ -75,12 +75,13 @@ class Version
     }
 
     /**
-     * 
+     * Returns a version string giving id and author
+     *
      * @return string
      */
     public static function getVersionString()
     {
-        return 'php-benchmark 1.0beta1 by Tom Tomsen.';
+        return 'php-benchmark ' . self::id() . ' by Tom Tomsen.';
     }
 
 }
