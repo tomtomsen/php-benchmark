@@ -81,7 +81,12 @@ class Version
      */
     public static function getVersionString()
     {
-        return 'php-benchmark ' . self::id() . ' by Tom Tomsen <tom.tomsen@inbox.com>.';
+        $package_name = 'php-benchmark';
+        $id = self::id();
+        $author = 'Tom Tomsen';
+        $email = 'tom.tomsen@inbox.com';
+
+        return sprintf('%s %s by %s <%s>', $package_name, $id, $author, $email);
     }
 
 }
