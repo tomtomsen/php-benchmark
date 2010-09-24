@@ -81,7 +81,7 @@ class Version
      */
     public static function getVersionString()
     {
-        return 'php-benchmark ' . self::id() . ' by Tom Tomsen.';
+        return 'php-benchmark ' . self::id() . ' by Tom Tomsen <tom.tomsen@inbox.com>.';
     }
 
 }
