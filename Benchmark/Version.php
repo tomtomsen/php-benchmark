@@ -75,6 +75,7 @@ class Version
     }
 
     /**
+     * 
      * @return string
      */
     public static function getVersionString()
