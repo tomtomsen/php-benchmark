@@ -45,7 +45,14 @@
  * @link      http://github.com/tomtomsen/benchmark
  * @since     File available since Release 1.0.0
  */
-require_once dirname(__FILE__) . '/Autoload.php';
+require_once dirname(__FILE__) . '/Utils/Autoload.php';
+Autoload::getInstance(dirname(__FILE__))->registerFolders(
+    array(
+        'Utils/',
+        'Observer/',
+        'Exception/',
+    )
+    );
 
 /**
  * A Benchmark can be run and starts specified methods/functions
