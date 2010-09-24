@@ -42,7 +42,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-                'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
@@ -55,8 +55,8 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
 
         $complexClass = $this->getMock('ComplexClass', array('doSomething'), array('param1', 'param2'));
         $complexClass->expects($this->once())
-                ->method('doSomething')
-                ->with($this->equalTo(1, 2));
+            ->method('doSomething')
+            ->with($this->equalTo(1, 2));
 
         $this->method->setClass($complexClass);
         $this->method->setName('doSomething');
@@ -97,11 +97,11 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         $method = $this->getMock('BenchmarkMethod', array('getName', 'getClassName', '__toString'));
 
         $method->expects($this->once())
-                ->method('getName')
-                ->will($this->returnValue('methodName'));
+            ->method('getName')
+            ->will($this->returnValue('methodName'));
         $method->expects($this->once())
-                ->method('getClassName')
-                ->will($this->returnValue('className'));
+            ->method('getClassName')
+            ->will($this->returnValue('className'));
 
         try {
             $method->invoke();
@@ -169,7 +169,7 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         $this->method->setClassName(new stdClass(), array(1, 2)); // object
 
         self::assertSame($class_name, $this->method->getClassName(),
-                        'class name should be the same');
+                'class name should be the same');
     }
 
     public function testSetClassName_WithConstructorArguments()
@@ -369,8 +369,8 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1, 2));
 
         $complexclass->expects($this->once())
-                ->method('doSomething')
-                ->with($this->equalTo(3, 4));
+            ->method('doSomething')
+            ->with($this->equalTo(3, 4));
 
         $target = new BenchmarkMethod();
         $target->setClass($complexclass);
@@ -391,8 +391,8 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         $complexclass = $this->getMock('ComplexClass', array('doSomething'), array(1, 2));
 
         $complexclass->expects($this->once())
-                ->method('doSomething')
-                ->with($this->equalTo(3, 4));
+            ->method('doSomething')
+            ->with($this->equalTo(3, 4));
 
         $target = new BenchmarkMethod();
         $target->setClass($complexclass);
@@ -448,6 +448,25 @@ class BenchmarkMethodTest extends PHPUnit_Framework_TestCase
         $this->method->setName('doSomething');
         $this->method->setArguments(array('arg3', 'arg4'));
         $this->method->invoke();
+    }
+
+    public function test_RefreshClassObjectFails()
+    {
+        TestHelper::includeComplexClass();
+
+        $mock = $this->getMock('BenchmarkMethod', array('getClassName'));
+        $mock->expects($this->atLeastOnce())
+            ->method('getClassName')
+            ->will($this->returnValue('unknown'));
+
+        try {
+            $mock->setClassName('ComplexClass');
+            self::fail('TargetNotFoundException expected');
+        } catch (TargetNotFoundException $ex) {
+            self::assertTrue($ex->getPreviousException() instanceof ReflectionException);
+        }
+
+        var_dump($mock);
     }
 
 }
