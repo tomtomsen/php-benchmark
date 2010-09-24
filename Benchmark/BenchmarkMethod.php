@@ -441,8 +441,8 @@ class BenchmarkMethod implements ITarget
         $constructor_args = $this->getConstructorArguments();
 
         if (isset($class_name) && is_array($constructor_args)) {
-            $reflection = new ReflectionClass($class_name);
             try {
+                $reflection = new ReflectionClass($class_name);
                 $this->class_obj = $reflection->newInstanceArgs($constructor_args);
             } catch (ReflectionException $ex) {
                 throw new TargetNotFoundException(
