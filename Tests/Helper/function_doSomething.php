@@ -25,6 +25,8 @@ if (!function_exists('doSomething')) {
 
         $doSomething_called = true;
         $doSomething_arguments = array($param1, $param2);
+
+        return;
     }
 
 }
