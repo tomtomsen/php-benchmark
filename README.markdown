@@ -31,7 +31,7 @@ Upcoming features
 
 Requirements
 ------------
-`php-benchmark` is testes with
+*php-benchmark* is testes with
 
  - php 5.3.3
  - php 5.2.14
@@ -41,5 +41,5 @@ Support
 I'm sure the files contain programming errors and lots of
 English language mistakes. Find them and send them to me ;-)
 
-Tom Tomsen <tom.tomsen@inbox.com>
+Tom Tomsen <<tom.tomsen@inbox.com>>
 
