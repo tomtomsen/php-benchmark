@@ -145,8 +145,8 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
      * Added methods or function should be returned
      */
     public function testGetTargets() {
-        require_once dirname(__FILE__) . '/helper/ComplexClass.php';
-        require dirname(__FILE__) . '/helper/function_doSomething.php';
+        require_once dirname(__FILE__) . '/Helper/ComplexClass.php';
+        require dirname(__FILE__) . '/Helper/function_doSomething.php';
 
         $this->benchmark->addTarget(new BenchmarkMethod('ComplexClass', array(1, 2), 'doSomething'));
         $this->benchmark->addTarget(new BenchmarkFunction('doSomething'));
