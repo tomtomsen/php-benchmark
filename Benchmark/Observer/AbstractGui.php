@@ -295,17 +295,40 @@ abstract class AbstractGui implements IObserver
         return;
     }
 
-    protected function addToTargetPool(ITarget $target) {
+    /**
+     * Adds a target to the target pool
+     *
+     * @param ITarget $target Target
+     *
+     * @return void
+     */
+    protected function addToTargetPool(ITarget $target)
+    {
         $key = $this->hash($target);
         if ( !isset($this->target_pool[$key]) ) {
             $this->target_pool[$key] = $target;
         }
+
+        return;
     }
 
-    protected function getTargetPool() {
+    /**
+     * Returns the target pool
+     *
+     * @return array
+     */
+    protected function getTargetPool()
+    {
         return $this->target_pool;
     }
 
+    /**
+     * Calculates a hash of an object
+     *
+     * @param object $obj object
+     *
+     * @return string
+     */
     protected function hash($obj)
     {
         return spl_object_hash($obj);
