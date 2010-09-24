@@ -50,40 +50,4 @@ class HelperTest extends PHPUnit_Framework_TestCase
     {
         self::assertSame('100 &mu;s', Helper::convertSecondsToTimeFormat(0.0001));
     }
-
-    public function testSortArrayAfterOtherArray()
-    {
-        $arr1 = array(
-            'b' => 'test2',
-            'a' => 'test1',
-            'c' => 'test3',
-        );
-        $arr2 = array(
-            'c' => 1,
-            'b' => 2,
-            'a' => 3,
-        );
-
-        $arr_result = Helper::sortArrayByOtherArray($arr1, $arr2);
-
-        self::assertSame(array('test3', 'test2', 'test1'), array_values($arr_result));
-    }
-
-    public function testSortArrayAfterOtherArray2()
-    {
-        $arr1 = array(
-            0 => 'test2',
-            1 => 'test1',
-            2 => 'test3',
-        );
-        $arr2 = array(
-            1 => 1,
-            2 => 2,
-            0 => 3,
-        );
-
-        $arr_result = Helper::sortArrayByOtherArray($arr1, $arr2);
-
-        self::assertSame(array('test1', 'test3', 'test2'), array_values($arr_result));
-    }
 }

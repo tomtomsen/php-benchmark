@@ -1,7 +1,7 @@
 <?php
 
 /**
- * php-benchmark
+ * Utils
  *
  * Copyright (c) 2002-2010, Tom Tomsen <tom.tomsen@inbox.com>.
  * All rights reserved.
@@ -37,62 +37,59 @@
  *
  * PHP Version 5
  *
- * @category  Tool
- * @package   php-benchmark
+ * @category  Utils
+ * @package   Utils
  * @author    Tom Tomsen <tom.tomsen@inbox.com>
  * @copyright 2010 Tom Tomsen <tom.tomsen@inbox.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
- * @link      http://github.com/tomtomsen/benchmark
+ * @link      http://github.com/tomtomsen/php-utils
  * @since     File available since Release 1.0.0
  */
 
 /**
- * Static helper class
+ * Array Utils
  *
- * Contains all kind of helping methods
- *
- * @category  Tool
- * @package   php-benchmark
+ * @category  Utils
+ * @package   Array
  * @author    Tom Tomsen <tom.tomsen@inbox.com>
  * @copyright 2010 Tom Tomsen <tom.tomsen@inbox.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
  * @version   Release: 1.0.0
- * @link      http://github.com/tomtomsen/benchmark
+ * @link      http://github.com/tomtomsen/php-utils
  * @since     Class available since Release 1.0.0
  */
-class Helper
+class ArrayUtils
 {
 
     /**
-     * converts seconds to an outputable string
+     * Sorts an array by a given reference array
      *
-     * for example:
-     *   1      -> 1,0 s
-     *   0.0001 -> 100 &mu;s
-     *   0.001  -> 100,0 ms
+     * @param array   $arr           Array
+     * @param array   $reference_arr Reference Array
+     * @param integer $sort_flag     You may modify the behavior of the sort
+     *                               using the optional parameter sort_flags,
+     *                               for details see sort.
+     * @param integer $sort_order    SORT_DESC or SORT_ASC (default)
      *
-     * @param double $seconds double representing seconds
-     *
-     * @return string
+     * @return array
      */
-    static public function convertSecondsToTimeFormat($seconds)
-    {
-        if (!is_numeric($seconds)) {
-            return false;
+    static public function sortArrayByArray(
+        $arr, $reference_arr, $sort_flag = SORT_NUMERIC, $sort_order = SORT_ASC
+    ) {
+        
+        if ($sort_order == SORT_DESC) {
+            arsort($reference_arr, $sort_flag);
+        } else {
+            asort($reference_arr, $sort_flag);
         }
 
-        $seconds = doubleval($seconds);
-        if ($seconds < 1) {
-            $ms = $seconds * 1000;
-            if ($ms < 1) {
-                $ys = $ms * 1000;
-                return number_format($ys, 0, ',', '.') . ' &mu;s';
-            }
-
-            return number_format($ms, 1, ',', '.') . ' ms';
+        $keys = array_keys($reference_arr);
+        $result = array();
+        for ($c = count($keys), $i = $c; $i--;) {
+            $result[$keys[$c - $i - 1]] = $arr[$keys[$c - $i - 1]];
         }
 
-        return number_format($seconds, 1, ',', '.') . ' s';
+        return $result;
     }
 
 }

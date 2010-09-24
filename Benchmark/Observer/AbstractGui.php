@@ -279,7 +279,7 @@ abstract class AbstractGui implements IObserver
             $this->view->setTemplate($template);
             $this->assignGeneralInfos($benchmark);
 
-            $sorted_targets = Helper::sortArrayByOtherArray(
+            $sorted_targets = ArrayUtils::sortArrayByArray(
                 $benchmark->getTargets(), $this->targets_times
             );
 
