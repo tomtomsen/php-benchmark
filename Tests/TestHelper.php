@@ -12,10 +12,10 @@
 class TestHelper {
 
     static public function includeDoSomethingFunction() {
-        require dirname(__FILE__) . '/helper/function_doSomething.php';
+        require dirname(__FILE__) . '/Helper/function_doSomething.php';
     }
 
     static public function includeComplexClass() {
-        require_once dirname(__FILE__) . '/helper/ComplexClass.php';
+        require_once dirname(__FILE__) . '/Helper/ComplexClass.php';
     }
 }
