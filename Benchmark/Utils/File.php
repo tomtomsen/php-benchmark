@@ -37,8 +37,8 @@
  *
  * PHP Version 5
  *
- * @category  Tool
- * @package   php-benchmark
+ * @category  Utils
+ * @package   Utils
  * @author    Tom Tomsen <tom.tomsen@inbox.com>
  * @copyright 2010 Tom Tomsen <tom.tomsen@inbox.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
