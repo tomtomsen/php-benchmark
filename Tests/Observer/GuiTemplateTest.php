@@ -80,7 +80,7 @@ class GuiTemplateProxy extends GuiTemplate
 {
     protected function getTemplateDir()
     {
-        return dirname(__FILE__) . '/../helper/';
+        return dirname(__FILE__) . '/../Helper/';
     }
 
 }

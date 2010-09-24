@@ -38,7 +38,7 @@ class GuiTest extends PHPUnit_Extensions_OutputTestCase
         $_SERVER['SERVER_SOFTWARE'] = 'Test';
         $benchmark = new Benchmark('title');
 
-        require_once dirname(__FILE__) . '/../helper/ComplexClass.php';
+        require_once dirname(__FILE__) . '/../Helper/ComplexClass.php';
         $description = 'some description';
         $benchmark->addTarget(new BenchmarkMethod('ComplexClass', array(1,2), 'doSomething', array('param1', 'param2'), $description));
 
