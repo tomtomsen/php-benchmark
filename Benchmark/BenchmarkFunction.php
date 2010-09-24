@@ -97,12 +97,6 @@ class BenchmarkFunction implements ITarget
      * @var ITarget
      */
     protected $post_executed_target;
-    /**
-     * Unique Id
-     *
-     * @var string
-     */
-    private $_unique_id;
 
     /**
      * Constructor
