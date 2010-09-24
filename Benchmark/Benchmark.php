@@ -190,17 +190,11 @@ class Benchmark implements IObservable, IBenchmark
      *
      * @param ITarget $target a target
      * 
-     * @return boolean
+     * @return Benchmark
      */
     public function addTarget(ITarget $target)
     {
-        if (!in_array($target->getUniqueId(), array_keys($this->targets))) {
-            // @todo: is cloning a good idea?
-            $this->targets[$target->getUniqueId()] = $target;
-            return true;
-        }
-
-        return false;
+        $this->targets[] = clone $target;
     }
 
     /**
