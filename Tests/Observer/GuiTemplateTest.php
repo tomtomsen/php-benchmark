@@ -66,9 +66,6 @@ class GuiTemplateTest extends PHPUnit_Extensions_OutputTestCase
                         'variable should exist and contain assigned value');
     }
 
-    /**
-     * @todo Implement testRender().
-     */
     public function testRender()
     {
         $template = $this->getValidUiTemplateInstance('hello_template.php');
