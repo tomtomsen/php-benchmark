@@ -40,6 +40,15 @@ class GuiTemplateTest extends PHPUnit_Extensions_OutputTestCase
         }
     }
 
+    public function testSetTemplate()
+    {
+        $tpl_name = 'hello_template.php';
+        $template = $this->getValidUiTemplateInstance($tpl_name);
+        $basename = pathinfo($template->getTemplate(), PATHINFO_DIRNAME);
+
+        self::assertSame($basename . '/' . $tpl_name, $template->getTemplate());
+    }
+
     /**
      * @todo Implement testAssign().
      */
