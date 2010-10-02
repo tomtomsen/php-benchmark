@@ -45,7 +45,7 @@ class GuiTemplateTest extends PHPUnit_Extensions_OutputTestCase
      */
     public function testAssign()
     {
-        $template = $this->getValiduiTemplateInstance('hello_template');
+        $template = $this->getValidUiTemplateInstance('hello_template.php');
 
         self::assertNull($template->data,
                         'variable was not assigned, there should not exist');
@@ -62,14 +62,20 @@ class GuiTemplateTest extends PHPUnit_Extensions_OutputTestCase
      */
     public function testRender()
     {
-        $template = $this->getValiduiTemplateInstance('hello_template');
+        $template = $this->getValidUiTemplateInstance('hello_template.php');
 
         echo $template->render();
 
         $this->expectOutputString('hello');
     }
 
-    protected function getValiduiTemplateInstance($template)
+    public function testRender_TemplateNotSet()
+    {
+        $template = new GuiTemplate();
+        self::assertFalse($template->render());
+    }
+
+    protected function getValidUiTemplateInstance($template)
     {
         return new GuiTemplateProxy($template);
     }
