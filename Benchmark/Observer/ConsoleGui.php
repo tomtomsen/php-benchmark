@@ -48,7 +48,6 @@
  * and open the template in the editor.
  */
 
-
 /**
  * Description of ConsoleGui
  *
@@ -76,7 +75,7 @@ class ConsoleGui extends AbstractGui
      *
      * @return string
      */
-    public function getBenchmarkStartedTemplate()
+    protected function getBenchmarkStartedTemplate()
     {
         return 'console.pre_output';
     }
@@ -86,7 +85,7 @@ class ConsoleGui extends AbstractGui
      *
      * @return string
      */
-    public function getTargetExecutionStartedTemplate()
+    protected function getTargetExecutionStartedTemplate()
     {
         return 'console.dialog';
     }
@@ -96,7 +95,7 @@ class ConsoleGui extends AbstractGui
      *
      * @return string
      */
-    public function getTargetExecutionEndedTemplate()
+    protected function getTargetExecutionEndedTemplate()
     {
         return null;
     }
@@ -106,7 +105,7 @@ class ConsoleGui extends AbstractGui
      *
      * @return string
      */
-    public function getBenchmarkEndedTemplate()
+    protected function getBenchmarkEndedTemplate()
     {
         return 'console.post_output';
     }
