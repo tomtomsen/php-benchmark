@@ -68,5 +68,5 @@ interface IObserver
      *
      * @return mixed
      */
-    public function update(IObservable $observable);
+    public function update($observable);
 }

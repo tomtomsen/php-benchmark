@@ -135,7 +135,7 @@ abstract class AbstractGui implements IObserver
      *
      * @return boolean false if event is unknown otherwise true
      */
-    public function update(IObservable $observable)
+    public function update($observable)
     {
         if (!$observable instanceof IBenchmark) {
             return false;

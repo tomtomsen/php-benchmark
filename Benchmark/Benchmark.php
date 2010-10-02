@@ -66,7 +66,7 @@ Autoload::getInstance(dirname(__FILE__))->registerFolders(
  * @link      http://github.com/tomtomsen/benchmark
  * @since     Class available since Release 1.0.0
  */
-class Benchmark implements IObservable, IBenchmark
+class Benchmark implements IBenchmark
 {
 
     /**
@@ -252,6 +252,7 @@ class Benchmark implements IObservable, IBenchmark
      */
     public function getTitle()
     {
+
         return $this->title;
     }
 
@@ -282,6 +283,7 @@ class Benchmark implements IObservable, IBenchmark
     }
 
     /**
+     *
      * Sets the latest benchmark target
      *
      * @param arget $target latest executed method or function
@@ -460,7 +462,7 @@ class Benchmark implements IObservable, IBenchmark
      *
      * @return Benchmark
      */
-    public function notify($state = null)
+    protected function notify($state = null)
     {
         if (isset($state)) {
             $this->setState($state);
