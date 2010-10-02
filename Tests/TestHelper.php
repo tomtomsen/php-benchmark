@@ -4,6 +4,14 @@
  * and open the template in the editor.
  */
 
+if ( !defined('SRC_DIR') ) {
+    define('SRC_DIR', dirname(__FILE__) . '/../Benchmark/');
+}
+
+if ( !defined('TEST_DIR') ) {
+    define('TEST_DIR', dirname(__FILE__));
+}
+
 /**
  * Description of TestHelper
  *
