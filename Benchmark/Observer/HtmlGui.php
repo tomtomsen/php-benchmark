@@ -75,7 +75,7 @@ class HtmlGui extends AbstractGui
      *
      * @return string
      */
-    public function getBenchmarkStartedTemplate()
+    protected function getBenchmarkStartedTemplate()
     {
         return 'html.pre_page.php';
     }
@@ -85,7 +85,7 @@ class HtmlGui extends AbstractGui
      *
      * @return string
      */
-    public function getTargetExecutionStartedTemplate()
+    protected function getTargetExecutionStartedTemplate()
     {
         return 'html.dialog.php';
     }
@@ -95,7 +95,7 @@ class HtmlGui extends AbstractGui
      *
      * @return string
      */
-    public function getTargetExecutionEndedTemplate()
+    protected function getTargetExecutionEndedTemplate()
     {
         return null;
     }
@@ -105,7 +105,7 @@ class HtmlGui extends AbstractGui
      *
      * @return string
      */
-    public function getBenchmarkEndedTemplate()
+    protected function getBenchmarkEndedTemplate()
     {
         return 'html.post_page.php';
     }
