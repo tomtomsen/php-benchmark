@@ -67,18 +67,9 @@ class GuiTest extends PHPUnit_Extensions_OutputTestCase
     }
 }
 
-class TemporaryObservable implements IObservable {
-    public function attach(IObserver $observer)
-    {
-        ;
-    }
+class TemporaryObservable  {
 
-    public function detach(IObserver $observer)
-    {
-        ;
-    }
-
-    public function notify()
+    protected function notify()
     {
         ;
     }
