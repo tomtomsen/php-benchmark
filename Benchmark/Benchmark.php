@@ -94,11 +94,17 @@ class Benchmark implements IObservable, IBenchmark
      */
     protected $targets;
     /**
-     * list of observers
+     * Gui
+     *
+     * @var IObserver
+     */
+    protected $gui;
+    /**
+     * list of loggers
      *
      * @var array
      */
-    protected $observers;
+    protected $loggers;
     /**
      * Current state
      *
@@ -138,7 +144,8 @@ class Benchmark implements IObservable, IBenchmark
 
         $this->iterations = 1000;
         $this->targets = array();
-        $this->observers = array();
+        $this->gui = null;
+        $this->loggers = array();
         $this->state = null;
         $this->current_target = null;
         $this->latest_result = null;
@@ -152,9 +159,6 @@ class Benchmark implements IObservable, IBenchmark
      */
     public function run()
     {
-        if (empty($this->observers)) {
-            throw new NoObserverGivenException();
-        }
         if (empty($this->targets)) {
             throw new NoTargetsGivenException();
         }
@@ -388,33 +392,62 @@ class Benchmark implements IObservable, IBenchmark
     }
 
     /**
-     * Attaches an observer
+     * Set the Graphical User Interface
      *
-     * @param IObserver $observer Observer to be attached
+     * Default: Gui
+     *
+     * @param IObserver $gui Gui-Class
+     * @return Benchmark
+     */
+    public function setGui(IObserver $gui) {
+        $this->gui = $gui;
+
+        return $this;
+    }
+
+    /**
+     * Returns the Graphical User Interface
+     *
+     * Default: GUI
+     *
+     * @return IObserver
+     */
+    public function getGui() {
+        if (!isset($this->gui) ) {
+            $this->gui = new Gui();
+        }
+
+        return $this->gui;
+    }
+
+    /**
+     * Adds a Logger
+     *
+     * @param IObserver $logger Logger to be added
      *
      * @return Benchmark
      */
-    public function attach(IObserver $observer)
+    public function addLogger(IObserver $logger)
     {
-        if (!in_array($observer, $this->observers)) {
-            $this->observers[] = $observer;
+        if (!in_array($logger, $this->loggers)) {
+            $this->loggers[] = $logger;
         }
 
         return $this;
     }
 
     /**
-     * Detaches an observer
+     * Removes a Logger
      *
-     * @param IObserver $observer Observer to be removed
+     * @param IObserver $logger Logger to be removed
      *
      * @return Benchmark
      */
-    public function detach(IObserver $observer)
+    public function removeLogger(IObserver $logger)
     {
-        if (in_array($observer, $this->observers)) {
-            $offset = array_search($observer, $this->observers);
-            $this->observers = array_splice($this->observers, $offset + 1, 1);
+        if (in_array($logger, $this->loggers)) {
+            $offset = array_search($logger, $this->loggers);
+            $this->loggers = array_splice($this->loggers, $offset + 1, 1);
         }
 
         return $this;
@@ -432,8 +465,10 @@ class Benchmark implements IObservable, IBenchmark
         if (isset($state)) {
             $this->setState($state);
 
-            foreach ($this->observers as $observer) {
-                $observer->update($this);
+            $this->getGui()->update($this);
+
+            foreach ($this->loggers as $logger) {
+                $logger->update($this);
             }
         }
 
