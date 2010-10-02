@@ -77,7 +77,7 @@ class ConsoleGui extends AbstractGui
      */
     protected function getBenchmarkStartedTemplate()
     {
-        return 'console.pre_output';
+        return 'console.pre_output.php';
     }
 
     /**
@@ -87,7 +87,7 @@ class ConsoleGui extends AbstractGui
      */
     protected function getTargetExecutionStartedTemplate()
     {
-        return 'console.dialog';
+        return 'console.dialog.php';
     }
 
     /**
@@ -107,7 +107,7 @@ class ConsoleGui extends AbstractGui
      */
     protected function getBenchmarkEndedTemplate()
     {
-        return 'console.post_output';
+        return 'console.post_output.php';
     }
 
     /**
