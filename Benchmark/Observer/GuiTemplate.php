@@ -98,7 +98,7 @@ class GuiTemplate implements ITemplateView
     {
 
         if (is_string($template) && strlen($template) > 0) {
-            $filename = $this->getTemplateDir() . $template . '.php';
+            $filename = $this->getTemplateDir() . $template;
             if (!is_file($filename)) {
                 include_once dirname(__FILE__) .
                   '/../Exception/TemplateNotFoundException.php';
