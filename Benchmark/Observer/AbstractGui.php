@@ -93,28 +93,28 @@ abstract class AbstractGui implements IObserver
      *
      * @return string
      */
-    abstract function getBenchmarkStartedTemplate();
+    abstract protected function getBenchmarkStartedTemplate();
 
     /**
      * Template which gets used after benchmark has ended
      *
      * @return string
      */
-    abstract function getBenchmarkEndedTemplate();
+    abstract protected function getBenchmarkEndedTemplate();
 
     /**
      * Template which gets used before a target gets executed
      *
      * @return string
      */
-    abstract function getTargetExecutionStartedTemplate();
+    abstract protected function getTargetExecutionStartedTemplate();
 
     /**
      * Template which gets used after a target gets executed
      *
      * @return string
      */
-    abstract function getTargetExecutionEndedTemplate();
+    abstract protected function getTargetExecutionEndedTemplate();
 
     /**
      * Constructor
