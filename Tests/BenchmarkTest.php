@@ -158,6 +158,7 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
     /**
      * All attached observers should be called when notify gets executed
      */
+    /*
     public function testNotify() {
         $observer = $this->getMock('IObserver', array('update'));
 
@@ -165,38 +166,25 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
                 ->method('update')
                 ->with($this->isInstanceOf('Benchmark'));
 
-        $this->benchmark->attach($observer);
+        $this->benchmark->setGui($observer);
         $this->benchmark->notify(State::BENCHMARK_STARTED);
     }
+     */
 
     /**
      * Added observers should be removed by calling detach
      */
-    public function testDetach() {
-        $observer = $this->getMock('IObserver', array('update'));
+    public function testSetGui() {
+        $gui = new Gui();
+        $this->benchmark->setGui($gui);
 
-        $observer->expects($this->never())
-                ->method('update');
-
-        $this->benchmark->attach($observer);
-        $this->benchmark->detach($observer);
-        $this->benchmark->notify(State::TARGET_EXECUTION_ENDED);
+        self::assertSame($gui, $this->benchmark->getGui());
     }
 
-    /**
-     * An observer should added just once
-     */
-    public function testAttach_RedundantObservers() {
-        $observer = $this->getMock('IObserver', array('update'));
-
-        $observer->expects($this->once())
-                ->method('update')
-                ->with($this->isInstanceOf('Benchmark'));
-
-        $this->benchmark->attach($observer);
-        $this->benchmark->attach($observer);
-        $this->benchmark->notify(State::TARGET_EXECUTION_ENDED);
+    public function testGetGui_DefaultValue() {
+        self::assertTrue($this->benchmark->getGui() instanceof Gui);
     }
+
 
     /**
      * Title should be changed by calling setTitle
@@ -265,18 +253,6 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException NoObserverGivenException
-     */
-    public function testRun_NoObserverGiven() {
-        TestHelper::includeDoSomethingFunction();
-
-        $benchmark_function = new BenchmarkFunction('doSomething', array(1, 2), 'description');
-        $this->benchmark->addTarget($benchmark_function);
-
-        $this->benchmark->run();
-    }
-
-    /**
      * @expectedException NoTargetsGivenException
      */
     public function testRun_NoTargetGiven() {
@@ -285,7 +261,7 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
         $observer_gui = new Gui();
 
         $benchmark_function = new BenchmarkFunction('doSomething', array(1, 2), 'description');
-        $this->benchmark->attach($observer_gui);
+        $this->benchmark->setGui($observer_gui);
 
         $this->benchmark->run();
     }
