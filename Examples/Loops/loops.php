@@ -22,8 +22,6 @@ $benchmark->addTarget(new BenchmarkFunction('while_common', array($data), '<code
 $benchmark->addTarget(new BenchmarkFunction('while_count_stored', array($data), '<code>$i = 0; $j = count($data); while($i < $j) ++$i;</code>'));
 $benchmark->addTarget(new BenchmarkFunction('foreach_common', array($data), '<code>foreach($data as $key => $val);</code>'));
 
-$benchmark->attach(new Gui());
-
 $benchmark->run();
 
 
