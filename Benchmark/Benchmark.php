@@ -250,7 +250,7 @@ class Benchmark implements IBenchmark
      * 
      * @return Benchmark
      */
-    public function setTitle($title)
+    protected function setTitle($title)
     {
         if (is_string($title) && strlen($title) > 0) {
             $this->title = $title;
@@ -277,7 +277,7 @@ class Benchmark implements IBenchmark
      *
      * @return Benchmark
      */
-    public function setDescription($description)
+    protected function setDescription($description)
     {
         if (is_string($description)) {
             $this->description = $description;
