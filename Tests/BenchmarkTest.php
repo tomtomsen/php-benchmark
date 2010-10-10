@@ -62,8 +62,7 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp() {
-        $this->benchmark = new Benchmark('benchmark-title',
-                        'benchmark-description');
+        $this->benchmark = new Benchmark('title');
     }
 
     /**
@@ -74,34 +73,100 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
         
     }
 
-    public function testSetIterations() {
-        $iterations = 1000;
+    public function testConstructor_Title_InvalidArgument() {
+        try {
+            new Benchmark(array()); // array
+            self::fail('InvalidArgumentException expected');
+        } catch (InvalidArgumentException $ex ) {}
+
+        try {
+            new Benchmark('');  // empty string
+            self::fail('InvalidArgumentException expected');
+        } catch (InvalidArgumentException $ex ) {}
+
+        try {
+            new Benchmark(1);   // integer
+            self::fail('InvalidArgumentException expected');
+        } catch (InvalidArgumentException $ex ) {}
+    }
+
+    /**
+     * @expectedException NoTargetsGivenException
+     */
+    public function testRun_NoTargetGiven() {
+        TestHelper::includeDoSomethingFunction();
+
+        $observer_gui = new Gui();
+
+        $benchmark_function = new BenchmarkFunction('doSomething', array(1, 2), 'description');
+        $this->benchmark->setGui($observer_gui);
+
+        $this->benchmark->run('title');
+    }
+
+    public function testRun_ObserversGetNotified() {
+        $iterations = 2;
+        TestHelper::includeDoSomethingFunction();
+
+        $observer = $this->getMock('ILogObserver', array());
+
+        $observer->expects($this->exactly(2*$iterations+2)) // bm_started/stopped + target_started/stopped per iteration
+                 ->method('update');
+
         $this->benchmark->setIterations($iterations);
+        $this->benchmark->addTarget(new BenchmarkFunction('doSomething', array(1, 2)));
+        $this->benchmark->addLogger($observer);
 
-        self::assertSame($iterations, $this->benchmark->getIterations());
+        ob_start(); // hide output
+        $this->benchmark->run();
+        ob_end_clean();
     }
 
-    /**
-     * Invalid values should not change the number of iterations
-     */
-    public function testSetIterations_InvalidValues() {
-        $default_value = $this->benchmark->getIterations();
+    public function testRun_TargetFunctionGetsInvoked() {
+        $args = array(1,2);
+        
+        TestHelper::includeDoSomethingFunction();
 
-        $this->benchmark->setIterations(-1);
-        $this->benchmark->setIterations(0);
-        $this->benchmark->setIterations('string');
-        $this->benchmark->setIterations(true);
+        global $doSomething_called;
+        global $doSomething_arguments;
+        
+        self::assertFalse($doSomething_called);
 
-        self::assertSame($default_value, $this->benchmark->getIterations(),
-                        'invalid values shouldnt change iteration value');
+        $this->benchmark->setIterations(1);
+        $this->benchmark->addTarget(new BenchmarkFunction('doSomething', $args));
+
+        ob_start();
+        $this->benchmark->run();
+        ob_end_clean();
+
+        self::assertTrue($doSomething_called);
+        self::assertSame($args, $doSomething_arguments);
     }
 
-    /**
-     * By default the iteration count should be greater than zero
-     */
-    public function testSetIterations_DefaultValue() {
-        self::assertGreaterThan(0, $this->benchmark->getIterations(),
-                        'default Value should be valid');
+    public function testRun_TargetMethodGetsInvoked() {
+        $c_args = array(5,6);
+        $args = array(3,4);
+        $iterations = 2;
+
+        TestHelper::includeComplexClass();
+
+        $method = $this->getMock('ComplexClass', array(), $c_args);
+
+        $method->expects($this->exactly($iterations))
+               ->method('doSomething')
+               ->with($args[0], $args[1]);
+
+        $target = new BenchmarkMethod();
+        $target->setClass($method);
+        $target->setName('doSomething');
+        $target->setArguments($args);
+        
+        $this->benchmark->setIterations($iterations);
+        $this->benchmark->addTarget($target);
+
+        ob_start();
+        $this->benchmark->run();
+        ob_end_clean();
     }
 
     public function testAddTarget() {
@@ -133,17 +198,11 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
         self::assertSame(2, count($targets));
     }
 
-    /**
-     * By default getTarget should return an empty array
-     */
     public function testGetTargets_DefaultValue() {
         self::assertSame(array(), $this->benchmark->getTargets(),
                         'targets expected to be empty after object being initialized');
     }
 
-    /**
-     * Added methods or function should be returned
-     */
     public function testGetTargets() {
         require_once dirname(__FILE__) . '/Helper/ComplexClass.php';
         require dirname(__FILE__) . '/Helper/function_doSomething.php';
@@ -155,25 +214,127 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
         self::assertSame(2, count($targets));
     }
 
-    /**
-     * All attached observers should be called when notify gets executed
-     */
-    /*
-    public function testNotify() {
-        $observer = $this->getMock('IObserver', array('update'));
+    public function testGetTitle_DefaultValue() {
+        TestHelper::includeDoSomethingFunction();
 
-        $observer->expects($this->once())
-                ->method('update')
-                ->with($this->isInstanceOf('Benchmark'));
+        $benchmark_title = 'new_title';
 
-        $this->benchmark->setGui($observer);
-        $this->benchmark->notify(State::BENCHMARK_STARTED);
+        $benchmark = new Benchmark($benchmark_title);
+        self::assertSame($benchmark_title, $benchmark->getTitle());
     }
-     */
+    
+    public function testGetTitle_EqualToValueSetByConstructor() {
+        $title = uniqid('title');
 
-    /**
-     * Added observers should be removed by calling detach
-     */
+        $benchmark = new Benchmark($title);
+        self::assertSame($title, $benchmark->getTitle());
+    }
+    
+    public function testGetDescription_DefaultValue() {
+        self::assertSame('', $this->benchmark->getDescription());
+    }
+
+    public function testGetDescription_EqualToValueGivenToConstructor() {
+        $descr = uniqid('description');
+
+        $benchmark = new Benchmark('title', $descr);
+        self::assertSame($descr, $benchmark->getDescription());
+    }
+
+    public function testGetCurrentTarget_CalledBeforeBenchmarkRun() {
+        self::assertNull($this->benchmark->getCurrentTarget());
+    }
+
+    public function testGetCurrentTarget_CalledWhileBenchmarkIsRunning() {
+        $this->markTestIncomplete();
+    }
+
+    public function testGetCurrentTarget_CalledAfterBenchmarkHasRun() {
+        TestHelper::includeDoSomethingFunction();
+
+        $target1 = new BenchmarkFunction('doSomething', array(1,2));
+        $target2 = new BenchmarkFunction('doSomething', array(3,4));
+        $this->benchmark->addTarget($target1);
+        $this->benchmark->addTarget($target2);
+        $this->benchmark->setIterations(1);
+
+        ob_start();
+        $this->benchmark->run();
+        ob_end_clean();
+
+        self::assertEquals($target2, $this->benchmark->getCurrentTarget());
+    }
+
+    public function testGetLatestResult_CalledBeforeBenchmarkRun() {
+        self::assertNull($this->benchmark->getLatestResult());
+    }
+
+    public function testGetLatestResult_CalledWhileBenchmarkIsRunning() {
+        $this->markTestIncomplete();
+    }
+
+    public function testGetLatestResult_CalledAfterBenchmarkHasRun() {
+        TestHelper::includeDoSomethingFunction();
+
+        $target1 = new BenchmarkFunction('doSomething', array(1,2));
+        $this->benchmark->addTarget($target1);
+        $this->benchmark->setIterations(1);
+
+        ob_start();
+        $this->benchmark->run();
+        ob_end_clean();
+
+        self::assertNotNull($this->benchmark->getLatestResult());
+        self::assertTrue($this->benchmark->getLatestResult() instanceof Result);
+    }
+
+    public function testGetCurrentIteration_CalledBeforeBenchmarkRun() {
+        self::assertSame(0, $this->benchmark->getCurrentIteration());
+    }
+
+    public function testGetCurrentIteration_CalledWhileBenchmarkIsRunning() {
+        $this->markTestIncomplete();
+    }
+
+    public function testGetCurrentIteration_CalledAfterBenchmarkHasRun() {
+        $iterations = 4;
+        TestHelper::includeDoSomethingFunction();
+
+        $target1 = new BenchmarkFunction('doSomething', array(1,2));
+        $this->benchmark->addTarget($target1);
+        $this->benchmark->setIterations($iterations);
+
+        ob_start();
+        $this->benchmark->run();
+        ob_end_clean();
+
+        self::assertSame($iterations, $this->benchmark->getCurrentIteration());
+    }
+
+    public function testSetIterations() {
+        $iterations = 1000;
+        $this->benchmark->setIterations($iterations);
+
+        self::assertSame($iterations, $this->benchmark->getIterations());
+    }
+
+    public function testSetIterations_InvalidValues() {
+        $default_value = $this->benchmark->getIterations();
+
+        $this->benchmark->setIterations(-1);
+        $this->benchmark->setIterations(0);
+        $this->benchmark->setIterations('string');
+        $this->benchmark->setIterations(true);
+
+        self::assertSame($default_value, $this->benchmark->getIterations(),
+                        'invalid values shouldnt change iteration value');
+    }
+
+    public function testGetIterations_DefaultValue() {
+        self::assertGreaterThan(0, $this->benchmark->getIterations(),
+                        'default Value should be valid');
+    }
+
     public function testSetGui() {
         $gui = new Gui();
         $this->benchmark->setGui($gui);
@@ -185,85 +346,40 @@ class BenchmarkTest extends PHPUnit_Framework_TestCase {
         self::assertTrue($this->benchmark->getGui() instanceof Gui);
     }
 
+    public function testAddLogger() {
+        $logger = $this->getMock('ILogObserver', array(), array(), 'Observer_1');
+        $logger2 = $this->getMock('ILogObserver', array(), array(), 'Observer_2');
 
-    /**
-     * Title should be changed by calling setTitle
-     */
-    public function testSetTitle() {
-        $title = 'new-title';
+        $this->benchmark->addLogger($logger);
 
-        $this->benchmark->setTitle($title);
-        self::assertSame($title, $this->benchmark->getTitle());
+        self::assertSame(1, count($this->benchmark->getLogger()));
+
+        $this->benchmark->addLogger($logger2);
+
+        self::assertSame(2, count($this->benchmark->getLogger()));
+
+        $this->benchmark->addLogger($logger2); // already added
+
+        self::assertSame(2, count($this->benchmark->getLogger()));
     }
 
-    /**
-     * Title should stay the same, when setTitle gets called with
-     * invalid arguments
-     */
-    public function testSetTitle_InvalidValue() {
-        $current_title = $this->benchmark->getTitle();
-
-        $this->benchmark->setTitle(true);
-        $this->benchmark->setTitle(1234);
-
-        self::assertSame($current_title, $this->benchmark->getTitle());
+    public function testGetLogger_DefaultValue()  {
+        self::assertSame(array(), $this->benchmark->getLogger());
     }
 
-    /**
-     * By default getTitle should return the title given at the constructor
-     */
-    public function testGetTitle_DefaultValue() {
+    public function testRemoveLogger() {
 
-        $benchmark_title = 'new_title';
+        $logger = $this->getMock('ILogObserver', array(), array(), 'Observer1');
+        $logger2 = $this->getMock('ILogObserver', array(), array(), 'Observer2');
 
-        $benchmark = new Benchmark($benchmark_title);
-        self::assertSame($benchmark_title, $benchmark->getTitle());
-    }
+        $this->benchmark->addLogger($logger);
+        $this->benchmark->addLogger($logger2);
 
-    /**
-     * Description should be change after setting the description
-     */
-    public function testSetDescription() {
-        $benchmark_description = 'new benchmark description';
+        self::assertSame(2, count($this->benchmark->getLogger()));
 
-        $this->benchmark->setDescription($benchmark_description);
-        self::assertSame($benchmark_description, $this->benchmark->getDescription());
-    }
+        $this->benchmark->removeLogger($logger);
 
-    /**
-     * When setDescription gets called with invalid values the old
-     * description should stay
-     */
-    public function testSetDescription_InvalidValues() {
-
-        $current_descr = $this->benchmark->getDescription();
-
-        $this->benchmark->setDescription(1234);
-        $this->benchmark->setDescription(true);
-
-        self::assertSame($current_descr, $this->benchmark->getDescription());
-    }
-
-    /**
-     * By default the description can be set by the constructor
-     */
-    public function testGetDescription_DefaultValue() {
-        $benchmark = new Benchmark('benchmark-title');
-        self::assertSame('', $benchmark->getDescription());
-    }
-
-    /**
-     * @expectedException NoTargetsGivenException
-     */
-    public function testRun_NoTargetGiven() {
-        TestHelper::includeDoSomethingFunction();
-
-        $observer_gui = new Gui();
-
-        $benchmark_function = new BenchmarkFunction('doSomething', array(1, 2), 'description');
-        $this->benchmark->setGui($observer_gui);
-
-        $this->benchmark->run();
+        self::assertSame(array($logger2), $this->benchmark->getLogger());
     }
 
 }
