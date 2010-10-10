@@ -153,7 +153,7 @@ class Benchmark implements IBenchmark
         $this->state = null;
         $this->current_target = null;
         $this->latest_result = null;
-        $this->current_iteration = null;
+        $this->current_iteration = 0;
     }
 
     /**
