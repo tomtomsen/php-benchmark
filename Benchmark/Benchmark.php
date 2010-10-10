@@ -206,6 +206,16 @@ class Benchmark implements IBenchmark
     }
 
     /**
+     * Returns all benchmark targets
+     *
+     * @return array contains arget objects
+     */
+    public function getTargets()
+    {
+        return $this->targets;
+    }
+
+    /**
      * Invokes a target
      *
      * @param arget $target method or function to call
@@ -359,16 +369,6 @@ class Benchmark implements IBenchmark
     public function getCurrentIteration()
     {
         return $this->current_iteration;
-    }
-
-    /**
-     * Returns all benchmark targets
-     *
-     * @return array contains arget objects
-     */
-    public function getTargets()
-    {
-        return $this->targets;
     }
 
     /**
