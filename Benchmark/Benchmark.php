@@ -139,6 +139,10 @@ class Benchmark implements IBenchmark
      */
     public function __construct($title, $description = '')
     {
+        if ( !isset($title) || !is_string($title) || strlen($title) == 0 ) {
+            throw new InvalidArgumentException('title is expected to be a string');
+        }
+        
         $this->setTitle($title);
         $this->setDescription($description);
 
