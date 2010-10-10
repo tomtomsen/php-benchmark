@@ -176,9 +176,9 @@ class Benchmark implements IBenchmark
         for ($c = $this->getIterations(), $j = $c; $j--;) {
             $this->setCurrentIteration($c - $j);
 
-            for ($i = count($keys); $i--;) {
+            for ($k = count($keys), $i = $k; $i--;) {
 
-                $current_target = $this->targets[$keys[$i]];
+                $current_target = $this->targets[$keys[$k - $i - 1]];
                 $this->setCurrentTarget($current_target);
 
                 $this->notify(State::TARGET_EXECUTION_STARTED);
