@@ -425,11 +425,11 @@ class Benchmark implements IBenchmark
     /**
      * Adds a Logger
      *
-     * @param IObserver $logger Logger to be added
+     * @param ILogObserver $logger Logger to be added
      *
      * @return Benchmark
      */
-    public function addLogger(IObserver $logger)
+    public function addLogger(ILogObserver $logger)
     {
         if (!in_array($logger, $this->loggers)) {
             $this->loggers[] = $logger;
@@ -439,13 +439,22 @@ class Benchmark implements IBenchmark
     }
 
     /**
+     * Returns current list of loggers
+     *
+     * @return array[ILogObserver]
+     */
+    public function getLogger() {
+        return $this->loggers;
+    }
+
+    /**
      * Removes a Logger
      *
-     * @param IObserver $logger Logger to be removed
+     * @param ILogObserver $logger Logger to be removed
      *
      * @return Benchmark
      */
-    public function removeLogger(IObserver $logger)
+    public function removeLogger(ILogObserver $logger)
     {
         if (in_array($logger, $this->loggers)) {
             $offset = array_search($logger, $this->loggers);
