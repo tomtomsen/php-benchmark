@@ -47,7 +47,7 @@
  */
 
 /**
- * View interface
+ * Observer interface for GUI
  *
  * @category  Tool
  * @package   php-benchmark
@@ -58,69 +58,5 @@
  * @link      http://github.com/tomtomsen/benchmark
  * @since     Class available since Release 1.0.0
  */
-class Gui implements IGuiObserver
-{
-
-    /**
-     * Used Targets
-     *
-     * @var array
-     */
-    protected $best_fitting_gui;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->best_fitting_gui = null;
-    }
-
-    /**
-     * Gets called if Benchmark notifies an event
-     *
-     * @param IObservable $observable Observable
-     *
-     * @return boolean false if event is unknown otherwise true
-     */
-    public function update($observable)
-    {
-        if (!$observable instanceof Benchmark) {
-            return false;
-        }
-
-        $this->getBestFittingGui()->update($observable);
-    }
-
-    /**
-     * Returns and sets the best fitting GUI
-     *
-     * @return IObserver
-     */
-    protected function getBestFittingGui()
-    {
-        if (!isset($this->best_fitting_gui)) {
-            if ($this->isBrowser()) {
-                include_once dirname(__FILE__) . '/HtmlGui.php';
-                $this->best_fitting_gui = new HtmlGui();
-            } else {
-                include_once dirname(__FILE__) . '/ConsoleGui.php';
-                $this->best_fitting_gui = new ConsoleGui();
-            }
-        }
-
-        return $this->best_fitting_gui;
-    }
-
-    /**
-     * Returns if the environment in which the Gui is running
-     * is a browser
-     *
-     * @return boolean
-     */
-    protected function isBrowser()
-    {
-        return isset($_SERVER['SERVER_SOFTWARE']);
-    }
-
+interface IGuiObserver extends IObserver {
 }

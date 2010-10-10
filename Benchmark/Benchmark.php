@@ -96,7 +96,7 @@ class Benchmark implements IBenchmark
     /**
      * Gui
      *
-     * @var IObserver
+     * @var IGuiObserver
      */
     protected $gui;
     /**
@@ -398,10 +398,10 @@ class Benchmark implements IBenchmark
      *
      * Default: Gui
      *
-     * @param IObserver $gui Gui-Class
+     * @param IGuiObserver $gui Gui-Class
      * @return Benchmark
      */
-    public function setGui(IObserver $gui) {
+    public function setGui(IGuiObserver $gui) {
         $this->gui = $gui;
 
         return $this;
@@ -412,7 +412,7 @@ class Benchmark implements IBenchmark
      *
      * Default: GUI
      *
-     * @return IObserver
+     * @return IGuiObserver
      */
     public function getGui() {
         if (!isset($this->gui) ) {
