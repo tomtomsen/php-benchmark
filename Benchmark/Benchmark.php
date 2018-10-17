@@ -148,6 +148,7 @@ class Benchmark implements IBenchmark
 
         $this->iterations = 1000;
         $this->targets = array();
+        $this->blub = 'test';
         $this->gui = null;
         $this->loggers = array();
         $this->state = null;
